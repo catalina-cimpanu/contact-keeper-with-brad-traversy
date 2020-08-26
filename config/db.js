@@ -7,6 +7,7 @@ const connectDB = async () => {
     await mongoose.connect(db, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
+      useCreateIndex: true, // cuz error DeprecationWarning: collection.ensureIndex is deprecated. Use createIndexes instead.
     });
     console.log("MongoDB connected.");
   } catch (err) {

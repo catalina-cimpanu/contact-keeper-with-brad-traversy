@@ -6,6 +6,9 @@ const app = express();
 // Connect database
 connectDB();
 
+// Init middleware
+app.use(express.json({ extended: true }));
+
 app.get("/", (req, res) => {
   res.json({
     msg: "Welcome to the ContactKeeper API made by Catalina",
