@@ -1,3 +1,6 @@
 {
-  "mongoURI": "mongodb+srv://admin-catalina:test123@contactkeeper.awwny.mongodb.net/ContactKeeper?retryWrites=true&w=majority"
+  "mongoURI": "mongodb://localhost:27017/ContactKeeperDB",
+  "jwtSecret": "secret"
 }
+
+// on atlas: mongodb+srv://admin-catalina:test123@contactkeeper.awwny.mongodb.net/ContactKeeper?retryWrites=true&w=majority
