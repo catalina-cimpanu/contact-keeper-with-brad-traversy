@@ -39,7 +39,19 @@ const ContactReducer = (state, action) => {
         ...state,
         current: null,
       };
-
+    case FILTER_CONTACTS:
+      return {
+        ...state,
+        filtered: state.contacts.filter((contact) => {
+          const regex = new RegExp(`${action.payload}`, "gi"); // to declare regular expressions: var pattern = new RegExp(pattern, attributes); g=global(all results, not only the first one, i=case insensitive) https://www.tutorialspoint.com/javascript/javascript_regexp_object.htm
+          return contact.name.match(regex) || contact.email.match(regex);
+        }),
+      };
+    case CLEAR_FILTER:
+      return {
+        ...state,
+        filtered: null,
+      };
     default:
       return state;
   }
