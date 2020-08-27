@@ -1,7 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import AlertContext from "../../contexts/alert/alertContext";
 import AuthContext from "../../contexts/auth/authContext";
-import { CLEAR_ERRORS } from "../../contexts/types";
 
 const Register = (props) => {
   const alertContext = useContext(AlertContext);
@@ -12,7 +11,7 @@ const Register = (props) => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      alert("You are already logged in!");
+      setAlert("You are already logged in!", "danger");
       props.history.push("/"); // redirection in react
     }
 
