@@ -6,10 +6,10 @@ const ContactItem = ({ contact }) => {
   const contactContext = useContext(ContactContext);
   const { deleteContact, setCurrent, clearCurrent } = contactContext;
 
-  const { id, name, email, phone, type } = contact;
+  const { _id, name, email, phone, type } = contact;
 
   const onDelete = () => {
-    deleteContact(id); // we have the id from the deconstruction up
+    deleteContact(_id); // we have the id from the deconstruction up
     clearCurrent(); // in case we're deleting the current contact, so that we reset the current
   };
 
