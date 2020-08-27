@@ -8,11 +8,11 @@ const { check, validationResult } = require("express-validator");
 const User = require("../models/User");
 
 // @route           GET api/auth
-// @description     Get logged in user
+// @description     Get logged in user (find the authorized user)
 // @access          Private
 router.get("/", auth, async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select("-password"); // -passwords means we won't return the password
+    const user = await User.findById(req.user.id).select("-password"); // -passwords means we won't send the password, only the rest
     res.json(user);
   } catch (err) {
     console.error(err.message);
@@ -21,7 +21,7 @@ router.get("/", auth, async (req, res) => {
 });
 
 // @route           POST api/auth
-// @description     Auth user & get token
+// @description     Auth user & get token (Login user)
 // @access          Public
 router.post(
   "/",
@@ -55,6 +55,7 @@ router.post(
         },
       };
 
+      // jwt.sign(payload, secretOrPrivateKey, [options, callback])  from https://www.npmjs.com/package/jsonwebtoken
       jwt.sign(
         payload,
         config.get("jwtSecret"),

@@ -2,6 +2,7 @@ import React, { useReducer } from "react";
 import axios from "axios";
 import AuthContext from "./authContext";
 import AuthReducer from "./authReducer";
+import setAuthToken from "../../utils/setAuthToken";
 import {
   REGISTER_SUCCESS,
   REGISTER_FAIL,
@@ -24,15 +25,26 @@ const AuthState = (props) => {
 
   const [state, dispatch] = useReducer(AuthReducer, initialState);
 
-  // Load user
+  // Load user = get the user data from the backend and put it into our state, so that we can validate our authentication, so that we can access certain areas
   const loadUser = async () => {
-    console.log("Log user");
+    if (localStorage.token) {
+      setAuthToken(localStorage.token); // we only have a token in localStorage if the registration or login were successful
+    }
+
+    try {
+      const res = await axios.get("/api/auth"); // cuz we have proxy, basically it will return the user object (minus the password), as res.data
+
+      dispatch({
+        type: USER_LOADED,
+        payload: res.data,
+      });
+    } catch (err) {
+      dispatch({ type: AUTH_ERROR });
+    }
   };
 
-  // Register user  (formData is basically : name, emial, password)
+  // Register user  (formData is basically : name, email, password)
   const register = async (formData) => {
-    console.log("formData: " + formData.email);
-    console.log("formData: " + formData.name);
     const config = {
       headers: { "Content-type": "application/json" },
     };
@@ -40,10 +52,13 @@ const AuthState = (props) => {
     // axios.post(url[, data[, config]]) , config has several options, one of which is headers, from https://kapeli.com/cheat_sheets/Axios.docset/Contents/Resources/Documents/index , see also  https://github.com/axios/axios
     try {
       const res = await axios.post("/api/users", formData, config); //normally http://localhost:5000/api/users, but we have "proxy": "http://localhost:5000" in package.json
+
       dispatch({
         type: REGISTER_SUCCESS,
         payload: res.data, // res.data will be the token sent by the server, after all the verification in the users route (what we did at the beginning)
       });
+
+      loadUser();
     } catch (err) {
       dispatch({
         type: REGISTER_FAIL,
