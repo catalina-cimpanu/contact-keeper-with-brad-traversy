@@ -11,7 +11,6 @@ const Register = (props) => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      setAlert("You are already logged in!", "danger");
       props.history.push("/"); // redirection in react
     }
 

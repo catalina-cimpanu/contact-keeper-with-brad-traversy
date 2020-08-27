@@ -93,7 +93,9 @@ const AuthState = (props) => {
 
   // Log out user (destroy token)
   const logoutUser = async () => {
-    console.log("Logout user");
+    dispatch({
+      type: LOGOUT,
+    });
   };
 
   // Clear errors
