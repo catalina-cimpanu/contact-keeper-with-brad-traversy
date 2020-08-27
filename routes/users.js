@@ -20,7 +20,7 @@ router.post(
     ).isLength({ min: 6 }),
   ],
   async (req, res) => {
-    const errors = validationResult(req);
+    const errors = validationResult(req); // method from express validator, returns an array (of errors, if any)
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
@@ -29,7 +29,7 @@ router.post(
     const { name, email, password } = req.body; // deconstructed what comes through req.body
 
     try {
-      let user = await User.findOne({ email }); // method from mongoose, find user with the email (which we set up to be unique!)
+      let user = await User.findOne({ email }); // method from mongoose, find user with the email (which we did set up to be unique!)
       if (user) {
         return res.status(400).json({ msg: "User already exists!" });
       }
@@ -52,6 +52,7 @@ router.post(
         },
       };
 
+      // jwt.sign(payload, secretOrPrivateKey, [options, callback])  from https://www.npmjs.com/package/jsonwebtoken
       jwt.sign(
         payload,
         config.get("jwtSecret"),
